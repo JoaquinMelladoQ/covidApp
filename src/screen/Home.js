@@ -3,10 +3,9 @@ import axios from 'axios';
 import { StyleSheet, Button, View, Text, ScrollView } from 'react-native';
 import { showMessage } from 'react-native-flash-message'
 import DropdownPicker from '../components/DropdownPicker'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const styles = StyleSheet.create({
-  container: {},
-})
+const countryAsyncStorageKey = 'countries'
 
 export default class Home extends Component {
     constructor(props) {
@@ -16,6 +15,17 @@ export default class Home extends Component {
         countries: [],
       }
     }
+
+  componentDidMount() {
+   this.getFromStorage() 
+  };
+
+  getFromStorage = async () => {
+    const savedData = await AsyncStorage.getItem(countryAsyncStorageKey)
+    console.log({ savedData });
+  }
+
+  
 
   fetchCountries = async () => {
     const { data, status } = await axios.get('https://api.covid19api.com/countries');
@@ -31,6 +41,8 @@ export default class Home extends Component {
           value: Slug,
         }
       })
+
+      AsyncStorage.setItem(countryAsyncStorageKey, JSON.stringify(formattedCountries))
 
       this.setState({ countries: formattedCountries })
     }
