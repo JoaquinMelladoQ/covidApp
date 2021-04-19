@@ -4,6 +4,7 @@ import { StyleSheet, Button, View, Text, ScrollView } from 'react-native';
 import { showMessage } from 'react-native-flash-message'
 import DropdownPicker from '../components/DropdownPicker'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import TotalData from '../components/TotalData'
 
 const countryAsyncStorageKey = 'countries'
 
@@ -95,6 +96,7 @@ export default class Home extends Component {
           countries={countries} 
           onSelect={this.onDropdownPickerSelect}
         />
+        <TotalData />
         <Text>{countryName} - {countryData.length}</Text>
       </>
     )

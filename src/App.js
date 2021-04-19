@@ -8,7 +8,10 @@ const App = () => {
     <SafeAreaView style={{ flex: 1, backgroundColor: '#34495e' }}>
       <StatusBar barStyle={'dark-content'} />
       <Home />
-      <FlashMessage position="top" />
+      <FlashMessage 
+        position="top" 
+        canRegisterAsDefault
+      />
     </SafeAreaView>
   );
 };
