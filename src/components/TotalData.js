@@ -24,10 +24,11 @@ const TotalData = ({
   totalDeaths = 0,
   totalRecevered = 0,
   totalActive = 0,
+  countryName = '',
 }) => {
   return (
     <>
-      <Text style={styles.title}>Total</Text>
+      <Text style={styles.title}>Total para {countryName}</Text>
       <View style={styles.container}>
         <Box 
           totalName="Confirmados"

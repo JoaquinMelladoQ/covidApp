@@ -96,7 +96,7 @@ export default class Home extends Component {
           countries={countries} 
           onSelect={this.onDropdownPickerSelect}
         />
-        <TotalData />
+        <TotalData countryName={countryName} />
         <Text>{countryName} - {countryData.length}</Text>
       </>
     )
