@@ -13,6 +13,8 @@ export default class Home extends Component {
   
       this.state = { 
         countries: [],
+        countryData: [],
+        countryName: null,
       }
     }
 
@@ -21,8 +23,11 @@ export default class Home extends Component {
   };
 
   getFromStorage = async () => {
-    const savedData = await AsyncStorage.getItem(countryAsyncStorageKey)
-    console.log({ savedData });
+    const savedData = JSON.parse(await AsyncStorage.getItem(countryAsyncStorageKey))
+    if (savedData) {
+      this.setState({ countries: savedData })
+    }
+    //console.log({ savedData: JSON.parse(savedData) });
   }
 
   
@@ -48,14 +53,49 @@ export default class Home extends Component {
     }
   }
 
+  onDropdownPickerSelect = ({ label, value }) => {
+    //console.log({ value });
+    this.fetchDataByCountry(label, value)
+  }
+
+  fetchDataByCountry = async (countryName, countrySlug) => {
+    try {
+        const { data, status } = await axios.get(
+          `https://api.covid19api.com/country/${countrySlug}`)
+        if (status === 200) {
+          this.setState({ 
+            countryData: data,
+            countryName,
+          })
+          return
+        }
+
+        this.setState({ 
+          countryData: [],
+          countryName: null,
+        })
+
+      } catch {
+      this.setState({ 
+        countryData: [],
+        countryName: null,
+      })
+    }
+    //console.log({ response });
+  }
+
 
   render() {
-    const { countries } = this.state
-    console.log({ countries });
+    const { countries, countryName, countryData } = this.state
+    //console.log({ countries });
     return (
       <>
         <Button title="Obtener países" onPress={this.fetchCountries}/>
-        <DropdownPicker countries={countries} />
+        <DropdownPicker 
+          countries={countries} 
+          onSelect={this.onDropdownPickerSelect}
+        />
+        <Text>{countryName} - {countryData.length}</Text>
       </>
     )
   }
