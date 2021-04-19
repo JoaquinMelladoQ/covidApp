@@ -84,11 +84,24 @@ export default class Home extends Component {
     }
     //console.log({ response });
   }
+  
+  getLastValue = (currentData = [], key) => {
+    const lastValue = currentData.slice(-1)
 
+    if (lastValue.length) {
+      return lastValue[0][key]
+    }
+    return 0
+  }
 
   render() {
     const { countries, countryName, countryData } = this.state
     //console.log({ countries });
+
+    const lastValueConfirmed = this.getLastValue(countryData, 'Confirmed')
+    const lastValueActive = this.getLastValue(countryData, 'Active')
+    const lastValueRecovered = this.getLastValue(countryData, 'Recovered')
+    const lastValueDeaths = this.getLastValue(countryData, 'Deaths')
     return (
       <>
         <Button title="Obtener países" onPress={this.fetchCountries}/>
@@ -96,8 +109,13 @@ export default class Home extends Component {
           countries={countries} 
           onSelect={this.onDropdownPickerSelect}
         />
-        <TotalData countryName={countryName} />
-        <Text>{countryName} - {countryData.length}</Text>
+        <TotalData 
+          countryName={countryName} 
+          totalConfirmed={lastValueConfirmed}
+          totalRecovered={lastValueRecovered}
+          totalActive={lastValueActive}
+          totalDeaths={lastValueDeaths}
+        />
       </>
     )
   }
