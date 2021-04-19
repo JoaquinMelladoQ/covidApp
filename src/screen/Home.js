@@ -4,6 +4,7 @@ import { StyleSheet, Button, View, Text, ScrollView } from 'react-native';
 import { showMessage } from 'react-native-flash-message'
 import DropdownPicker from '../components/DropdownPicker'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import LineChartData from '../components/LineChart';
 import TotalData from '../components/TotalData'
 
 const countryAsyncStorageKey = 'countries'
@@ -97,11 +98,16 @@ export default class Home extends Component {
   render() {
     const { countries, countryName, countryData } = this.state
     //console.log({ countries });
+    const lastValueConfirmed = this.getLastValue(countryData, 'Confirmed');
+    const lastValueActive = this.getLastValue(countryData, 'Active');
+    const lastValueRecovered = this.getLastValue(countryData, 'Recovered');
+    const lastValueDeaths = this.getLastValue(countryData, 'Deaths');
 
-    const lastValueConfirmed = this.getLastValue(countryData, 'Confirmed')
-    const lastValueActive = this.getLastValue(countryData, 'Active')
-    const lastValueRecovered = this.getLastValue(countryData, 'Recovered')
-    const lastValueDeaths = this.getLastValue(countryData, 'Deaths')
+    const lineChartConfirmed = countryData.map(({ Confirmed }) => Confirmed);
+    const lineChartActive = countryData.map(data => data.Active);
+    const lineChartRecovered = countryData.map(data => data.Recovered);
+    const lineChartDeaths = countryData.map(data => data.Deaths);
+
     return (
       <>
         <Button title="Obtener países" onPress={this.fetchCountries}/>
@@ -116,6 +122,28 @@ export default class Home extends Component {
           totalActive={lastValueActive}
           totalDeaths={lastValueDeaths}
         />
+        <ScrollView>
+          <LineChartData
+            title="Confirmados"
+            data={lineChartConfirmed}
+            color={colors.blue}
+          />
+          <LineChartData
+            title="Recuperados"
+            data={lineChartRecovered}
+            color={colors.green}
+          />
+          <LineChartData
+            title="Fallecidos"
+            data={lineChartDeaths}
+            color={colors.red}
+          />
+          <LineChartData
+            title="Activos"
+            data={lineChartActive}
+            color={colors.yellow}
+          />
+        </ScrollView>
       </>
     )
   }
