@@ -6,6 +6,7 @@ import DropdownPicker from '../components/DropdownPicker'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import LineChartData from '../components/LineChart';
 import TotalData from '../components/TotalData'
+import colors from '../config/colors'
 
 const countryAsyncStorageKey = 'countries'
 
