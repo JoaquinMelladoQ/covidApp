@@ -5,6 +5,7 @@ import HomeNavigation from './HomeStack'
 import World from '../screen/World'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Fontisto from 'react-native-vector-icons/Fontisto'
+import colors from '../config/colors'
 
 const styles = StyleSheet.create({
   icon: {
@@ -19,6 +20,8 @@ const BottomNavigation = () => (
   <BottomTabs.Navigator
     tabBarOptions={{
       showLabel: false,
+      activeTintColor: colors.darkBlue,
+      inactiveTintColor: colors.ice
     }}
   >
     <BottomTabs.Screen 
@@ -31,12 +34,13 @@ const BottomNavigation = () => (
           color,
         }) => {
           Icon.loadFont()
+          const iconSize = focused ? 40 : 35
           return (
             <View style={styles.icon}>
               <Icon 
                 name="home" 
                 color={color}
-                size={40}
+                size={iconSize}
               />
             </View>  
           )
@@ -49,9 +53,10 @@ const BottomNavigation = () => (
       options={{
         tabBarIcon: ({ focused, size, color }) => {
           Fontisto.loadFont()
+          const iconSize = focused ? 30 : 25
           return (
            <View style={styles.icon}>
-             <Fontisto name="world" color={color} size={30} />
+             <Fontisto name="world" color={color} size={iconSize} />
            </View> 
           )
         }
