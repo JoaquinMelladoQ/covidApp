@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, ScrollView, SafeAreaView } from 'react-native'
+import { StyleSheet, ScrollView, SafeAreaView, Button } from 'react-native'
 import LineChartData from '../components/LineChart'
 import colors from '../config/colors'
 
@@ -21,6 +21,7 @@ const Charts = ({
   }
 }) => (
   <SafeAreaView style={styles.container}>
+    <Button title="Volver atrás" onPress={() => navigation.pop()} />
     <ScrollView>
       <LineChartData
         title="Confirmados"
