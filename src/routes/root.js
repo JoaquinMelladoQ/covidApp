@@ -8,7 +8,9 @@ const RootStack = createStackNavigator();
 
 const RootNavigation = () => (
   <NavigationContainer>
-    <ScreenNavigator />
+    <RootStack.Navigator>
+      <RootStack.Screen name="Screens" component={ScreenNavigator} />
+    </RootStack.Navigator>
   </NavigationContainer>
 );
 
