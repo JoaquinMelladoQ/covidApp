@@ -1,12 +1,20 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { StyleSheet, Button, View, Text, ScrollView, SafeAreaView } from 'react-native';
+import { StyleSheet, Button, ScrollView, SafeAreaView } from 'react-native';
 import { showMessage } from 'react-native-flash-message'
 import DropdownPicker from '../components/DropdownPicker'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import LineChartData from '../components/LineChart';
 import TotalData from '../components/TotalData'
 import colors from '../config/colors'
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.darkBlue,
+  }
+})
 
 const countryAsyncStorageKey = 'countries'
 
@@ -97,6 +105,7 @@ export default class Home extends Component {
   }
 
   render() {
+    const { navigation } = this.props
     const { countries, countryName, countryData } = this.state
     //console.log({ countries });
     const lastValueConfirmed = this.getLastValue(countryData, 'Confirmed');
@@ -110,7 +119,7 @@ export default class Home extends Component {
     const lineChartDeaths = countryData.map(data => data.Deaths);
 
     return (
-      <SafeAreaView style={{ backgroundColor: colors.darkBlue }}>
+      <SafeAreaView style={styles.container}>
         <Button title="Obtener países" onPress={this.fetchCountries}/>
         <DropdownPicker 
           countries={countries} 
@@ -123,28 +132,15 @@ export default class Home extends Component {
           totalActive={lastValueActive}
           totalDeaths={lastValueDeaths}
         />
-        <ScrollView>
-          <LineChartData
-            title="Confirmados"
-            data={lineChartConfirmed}
-            color={colors.blue}
-          />
-          <LineChartData
-            title="Recuperados"
-            data={lineChartRecovered}
-            color={colors.green}
-          />
-          <LineChartData
-            title="Fallecidos"
-            data={lineChartDeaths}
-            color={colors.red}
-          />
-          <LineChartData
-            title="Activos"
-            data={lineChartActive}
-            color={colors.yellow}
-          />
-        </ScrollView>
+        <Button 
+          title="Navegar a Gráficos"
+          onPress={() => navigation.navigate('Charts', { 
+            lineChartConfirmed,
+            lineChartActive,
+            lineChartRecovered,
+            lineChartDeaths, 
+          })}
+        /> 
       </SafeAreaView>
     )
   }
