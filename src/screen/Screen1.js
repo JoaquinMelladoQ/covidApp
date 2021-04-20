@@ -22,7 +22,7 @@ const Screen1 = ({ navigation }) => {
       <Text style={styles.text}>Screen1</Text>
       <Button 
         color={colors.white}
-        onPress={() => navigation.navigate('Ruta2')}
+        onPress={() => navigation.navigate('Screen2')}
         title="navegar" 
       />
     </View>

@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 25,
-    color: colors.green,
+    color: colors.white,
     fontWeight: 'bold',
   },
 })
