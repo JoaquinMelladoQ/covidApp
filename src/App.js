@@ -6,14 +6,14 @@ import RootNavigation from './routes/root'
 
 const App = () => {
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#34495e' }}>
+    <>
       <StatusBar barStyle={'dark-content'} />
       <FlashMessage 
         position="top" 
         canRegisterAsDefault
       />
       <RootNavigation />
-    </SafeAreaView>
+    </>
   );
 };
 
