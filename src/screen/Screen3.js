@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Button } from 'react-native';
 import colors from '../config/colors'
 
 const styles = StyleSheet.create({
@@ -16,10 +16,15 @@ const styles = StyleSheet.create({
   },
 })
 
-const Screen3 = () => {
+const Screen3 = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Screen3</Text>
+     <Button 
+        color={colors.white}
+        onPress={() => navigation.popToTop()}
+        title="navegar"
+      />
     </View>
   )
 }

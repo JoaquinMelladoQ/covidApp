@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native'
+import { View, Text, SafeAreaView } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Screen1 from '../screen/Screen1'
@@ -17,19 +17,35 @@ const RootNavigation = () => (
       <RootStack.Screen 
         name="Screen1" 
         component={Screen1} 
-        options={{ header: () => (
-          <View>
-            <Text>Custom</Text>
-          </View>
-        ) }}
+        options={{
+          header: () => (
+            <SafeAreaView>
+              <Text>Header screen 1</Text>
+            </SafeAreaView>
+          )
+        }}
       />
       <RootStack.Screen 
         name="Screen2" 
         component={Screen2} 
+        options={{
+          header: () => (
+            <SafeAreaView>
+              <Text>Header screen 2</Text>
+            </SafeAreaView>
+          )
+        }}
       />
       <RootStack.Screen 
         name="Screen3" 
         component={Screen3} 
+        options={{
+          header: () => (
+            <SafeAreaView>
+              <Text>Header screen 3</Text>
+            </SafeAreaView>
+          )
+        }}
       />
     </RootStack.Navigator>
   </NavigationContainer>
