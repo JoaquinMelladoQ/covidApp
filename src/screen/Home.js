@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { StyleSheet, Button, ScrollView, SafeAreaView } from 'react-native';
+import { StyleSheet, Button, SafeAreaView } from 'react-native';
 import { showMessage } from 'react-native-flash-message'
 import DropdownPicker from '../components/DropdownPicker'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import LineChartData from '../components/LineChart';
 import TotalData from '../components/TotalData'
 import colors from '../config/colors'
 import Loading from '../components/Loading'
