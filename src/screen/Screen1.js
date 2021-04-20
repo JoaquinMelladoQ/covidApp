@@ -21,7 +21,8 @@ const Screen1 = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.text}>Screen1</Text>
       <Button 
-        onPress={navigation.navigate('Ruta2')}
+        color={colors.white}
+        onPress={() => navigation.navigate('Ruta2')}
         title="navegar" 
       />
     </View>

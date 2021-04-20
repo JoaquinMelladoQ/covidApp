@@ -21,7 +21,7 @@ const RootNavigation = () => (
           </View>
         ) }}
       />
-      <RootStack.Screen name="Screen2" component={Screen2} />
+      <RootStack.Screen name="Ruta2" component={Screen2} />
       <RootStack.Screen name="Screen3" component={Screen3} />
     </RootStack.Navigator>
   </NavigationContainer>
