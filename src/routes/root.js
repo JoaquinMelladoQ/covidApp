@@ -2,6 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import ScreenNavigator from './ScreensStack';
+import HomeNavigation from './HomeStack';
 //import BottomNavigation from './BottomTabStack';
 
 const RootStack = createStackNavigator();
@@ -9,6 +10,7 @@ const RootStack = createStackNavigator();
 const RootNavigation = () => (
   <NavigationContainer>
     <RootStack.Navigator>
+      <RootStack.Screen name="Home" component={HomeNavigation} />
       <RootStack.Screen name="Screens" component={ScreenNavigator} />
     </RootStack.Navigator>
   </NavigationContainer>
