@@ -23,7 +23,12 @@ const Screen3 = ({ navigation }) => {
      <Button 
         color={colors.white}
         onPress={() => navigation.popToTop()}
-        title="navegar"
+        title="Volver al principio"
+      />
+     <Button 
+        color={colors.yellow}
+        onPress={() => navigation.pop()}
+        title="Volver"
       />
     </View>
   )

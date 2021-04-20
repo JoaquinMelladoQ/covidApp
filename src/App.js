@@ -2,7 +2,7 @@ import React from 'react';
 import { SafeAreaView, StatusBar } from 'react-native';
 import Home from './screen/Home'
 import FlashMessage from 'react-native-flash-message'  
-import RootNavigation from './routes/root'
+import RootNavigation from './routes/Root'
 
 const App = () => {
   return (
