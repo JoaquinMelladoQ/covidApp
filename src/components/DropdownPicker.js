@@ -5,6 +5,7 @@ import Dropdown from 'react-native-dropdown-picker';
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
+    marginHorizontal: 20,
   },
   innerContainer: {
     height: 40,

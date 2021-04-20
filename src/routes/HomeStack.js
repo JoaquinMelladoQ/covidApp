@@ -5,7 +5,7 @@ import Home from '../screen/Home'
 const HomeStack = createStackNavigator()
 
 const HomeNavigation = () => (
-  <HomeStack.Navigator>
+  <HomeStack.Navigator headerMode="none">
     <HomeStack.Screen name="Home" component={Home} />
   </HomeStack.Navigator>
 )

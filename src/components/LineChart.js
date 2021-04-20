@@ -29,19 +29,28 @@ const LineChartData = ({ title = '', data = [], color }) => {
     <View style={{ marginHorizontal: 20 }}>
       <Text style={styles.title}>{title}</Text>
       <View style={styles.container}>
-        <YAxis
-          data={data}
-          contentInset={{ top: 20, bottom: 20 }}
-          svg={{
-            fill: 'grey',
-            fontSize: 10,
-          }}
-          numberOfTicks={20}
-          formatLabel={value => value}
-        />
-        <LineChart style={styles.lineChart} data={data} svg={{ stroke: color }}>
-          <Grid />
-        </LineChart>
+        {
+          data.length ? (
+            <>
+              <YAxis
+                data={data}
+                contentInset={{ top: 20, bottom: 20 }}
+                svg={{
+                  fill: 'grey',
+                  fontSize: 10,
+                }}
+                numberOfTicks={20}
+                formatLabel={value => value}
+              />
+              <LineChart style={styles.lineChart} data={data} svg={{ stroke: color }}>
+                <Grid />
+              </LineChart>
+            </>
+          )
+          : (
+            <Text>No hay información disponible</Text>
+          )
+        }
       </View>
     </View>
   );

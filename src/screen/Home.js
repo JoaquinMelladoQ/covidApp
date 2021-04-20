@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { StyleSheet, Button, View, Text, ScrollView } from 'react-native';
+import { StyleSheet, Button, View, Text, ScrollView, SafeAreaView } from 'react-native';
 import { showMessage } from 'react-native-flash-message'
 import DropdownPicker from '../components/DropdownPicker'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -110,7 +110,7 @@ export default class Home extends Component {
     const lineChartDeaths = countryData.map(data => data.Deaths);
 
     return (
-      <>
+      <SafeAreaView style={{ backgroundColor: colors.darkBlue }}>
         <Button title="Obtener países" onPress={this.fetchCountries}/>
         <DropdownPicker 
           countries={countries} 
@@ -145,7 +145,7 @@ export default class Home extends Component {
             color={colors.yellow}
           />
         </ScrollView>
-      </>
+      </SafeAreaView>
     )
   }
 }
