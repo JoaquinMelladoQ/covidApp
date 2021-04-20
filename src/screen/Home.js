@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import LineChartData from '../components/LineChart';
 import TotalData from '../components/TotalData'
 import colors from '../config/colors'
+import Loading from '../components/Loading'
 
 
 const styles = StyleSheet.create({
@@ -26,6 +27,7 @@ export default class Home extends Component {
         countries: [],
         countryData: [],
         countryName: null,
+        isLoading: false,
       }
     }
 
@@ -70,6 +72,7 @@ export default class Home extends Component {
   }
 
   fetchDataByCountry = async (countryName, countrySlug) => {
+    this.setState({ isLoading: true })
     try {
         const { data, status } = await axios.get(
           `https://api.covid19api.com/country/${countrySlug}`)
@@ -77,6 +80,7 @@ export default class Home extends Component {
           this.setState({ 
             countryData: data,
             countryName,
+            isLoading: false,
           })
           return
         }
@@ -84,12 +88,14 @@ export default class Home extends Component {
         this.setState({ 
           countryData: [],
           countryName: null,
+          isLoading: false,
         })
 
       } catch {
       this.setState({ 
         countryData: [],
         countryName: null,
+        isLoading: false,
       })
     }
     //console.log({ response });
@@ -106,7 +112,7 @@ export default class Home extends Component {
 
   render() {
     const { navigation } = this.props
-    const { countries, countryName, countryData } = this.state
+    const { countries, countryName, countryData, isLoading } = this.state
     //console.log({ countries });
     const lastValueConfirmed = this.getLastValue(countryData, 'Confirmed');
     const lastValueActive = this.getLastValue(countryData, 'Active');
@@ -125,13 +131,15 @@ export default class Home extends Component {
           countries={countries} 
           onSelect={this.onDropdownPickerSelect}
         />
-        <TotalData 
-          countryName={countryName} 
-          totalConfirmed={lastValueConfirmed}
-          totalRecovered={lastValueRecovered}
-          totalActive={lastValueActive}
-          totalDeaths={lastValueDeaths}
-        />
+        <Loading isLoading={isLoading}>
+          <TotalData 
+            countryName={countryName} 
+            totalConfirmed={lastValueConfirmed}
+            totalRecovered={lastValueRecovered}
+            totalActive={lastValueActive}
+            totalDeaths={lastValueDeaths}
+          />
+        </Loading>
         <Button 
           title="Navegar a Gráficos"
           onPress={() => navigation.navigate('Charts', { 
