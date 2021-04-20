@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 const TotalData = ({
   totalConfirmed = 0,
   totalDeaths = 0,
-  totalRecevered = 0,
+  totalRecovered = 0,
   totalActive = 0,
   countryName = '',
 }) => {
@@ -37,7 +37,7 @@ const TotalData = ({
         />
         <Box 
           totalName="Recuperados"
-          totalValue={totalRecevered}
+          totalValue={totalRecovered}
           color={colors.green}
         />
 
