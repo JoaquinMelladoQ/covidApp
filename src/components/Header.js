@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '../config/colors';
-//import { useNavigation, DrawerActions } from '@react-navigation/native';
+import { useNavigation, DrawerActions } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   container: {
@@ -18,11 +18,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const Header = ({ iconCallback = () => {} }) => {
+const Header = () => {
+  const navigation = useNavigation()
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        onPress={iconCallback}>
+        onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
         <Icon 
           size={30} 
           name="menu" 

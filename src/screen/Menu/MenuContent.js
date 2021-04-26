@@ -21,6 +21,11 @@ const MenuContent = ({ navigation }) => {
         title="Navegar a UseState"
         onPress={() => navigation.navigate('UseState')}
       />
+      <Button 
+        color={colors.darkBlue}
+        title="Navegar a UseCallback"
+        onPress={() => navigation.navigate('UseCallback')}
+      />
     </View>
   )
 }

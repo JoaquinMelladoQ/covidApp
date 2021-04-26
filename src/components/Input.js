@@ -13,17 +13,22 @@ const styles = StyleSheet.create({
 })
 
 const Input = ({ 
+  keyboardType = 'default',
   placeholder, 
   value,
   onChangeText = () => {},
+  autoCapitalize,
+  autoCorrect,
 }) => {
   return (
     <View style={styles.container}>
       <TextInput 
+        autoCorrect={autoCorrect}
+        autoCapitalize={autoCapitalize}
         placeholder={placeholder}
         value={value}
         onChangeText={onChangeText}
-        keyboardType="default"
+        keyboardType={keyboardType}
       />
     </View>
   )
