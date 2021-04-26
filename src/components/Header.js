@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '../config/colors';
-import { useNavigation, DrawerActions } from '@react-navigation/native';
+//import { useNavigation, DrawerActions } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   container: {
