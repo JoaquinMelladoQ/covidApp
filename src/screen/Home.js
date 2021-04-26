@@ -125,6 +125,11 @@ export default class Home extends Component {
 
     return (
       <SafeAreaView style={styles.container}>
+        <Button 
+          color={colors.yellow}
+          title="Abrir menú lateral"
+          onPress={() => navigation.openDrawer()}
+        />
         <Button title="Obtener países" onPress={this.fetchCountries}/>
         <DropdownPicker 
           countries={countries} 
