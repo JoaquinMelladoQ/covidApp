@@ -1,10 +1,26 @@
 import React from 'react';
-import { View, Text } from 'react-native'
+//import { useNavigation } from '@react-navigation/core'
+import { View, Text, StyleSheet, Button } from 'react-native'
+import colors from '../../config/colors'
 
-const MenuContent = () => {
+const styles = StyleSheet.create({
+  container: {},
+})
+
+const MenuContent = ({ navigation }) => {
   return (
-    <View>
+    <View style={styles.container}>
       <Text>Menú lateral</Text>
+      <Button 
+        color={colors.darkBlue}
+        title="Navegar a Screens"
+        onPress={() => navigation.navigate('ScreenNavigator')}
+      />
+      <Button 
+        color={colors.darkBlue}
+        title="Navegar a UseState"
+        onPress={() => navigation.navigate('UseState')}
+      />
     </View>
   )
 }
