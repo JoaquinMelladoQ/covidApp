@@ -6,6 +6,7 @@ import ScreenNavigator from './ScreensStack';
 import MenuContent from '../screen/Menu/MenuContent';
 import UseState from '../screen/Hooks/UseState'
 import UseCallback from '../screen/Hooks/UseCallback'
+import UseMemo from '../screen/Hooks/UseMemo'
 
 const styles = StyleSheet.create({
   drawerContainer: {
@@ -25,6 +26,7 @@ const DrawerNavigator = props => (
     <MenuDrawer.Screen name="ScreenNavigator" component={ScreenNavigator} />
     <MenuDrawer.Screen name="UseState" component={UseState} />
     <MenuDrawer.Screen name="UseCallback" component={UseCallback} />
+    <MenuDrawer.Screen name="UseMemo" component={UseMemo} />
   </MenuDrawer.Navigator>
 );
 
