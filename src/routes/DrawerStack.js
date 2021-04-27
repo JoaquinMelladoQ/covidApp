@@ -7,7 +7,7 @@ import MenuContent from '../screen/Menu/MenuContent';
 import UseState from '../screen/Hooks/UseState'
 import UseCallback from '../screen/Hooks/UseCallback'
 import UseMemo from '../screen/Hooks/UseMemo'
-import Countries from '../screen/Countries'
+import HomeNavigation from './HomeStack'
 
 const styles = StyleSheet.create({
   drawerContainer: {
@@ -23,7 +23,7 @@ const DrawerNavigator = props => (
   <MenuDrawer.Navigator
     drawerStyle={styles.drawerContainer}
     drawerContent={MenuContent}>
-    <MenuDrawer.Screen name="Countries" component={Countries} />
+    <MenuDrawer.Screen name="Home" component={HomeNavigation} />
     <MenuDrawer.Screen name="BotomNavigator" component={BottomNavigation} />
     <MenuDrawer.Screen name="ScreenNavigator" component={ScreenNavigator} />
     <MenuDrawer.Screen name="UseState" component={UseState} />

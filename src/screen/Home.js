@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Button, SafeAreaView } from 'react-native';
-import TotalData from '../components/TotalData'
-import colors from '../config/colors'
-import Loading from '../components/Loading'
-
+import TotalData from '../components/TotalData';
+import colors from '../config/colors';
+import { useRoute, useNavigation } from '@react-navigation/core';
 
 const styles = StyleSheet.create({
   container: {
@@ -12,30 +11,14 @@ const styles = StyleSheet.create({
   }
 })
 
+const Home = () => {
+  const routes = useRoute();
+  const navigation = useNavigation();
 
-export default class Home extends Component {
-    constructor(props) {
-      super(props)
+  const [countryName] = useState(routes.params.countryName);
+  const [countryData] = useState(routes.params.data);
   
-      this.state = { 
-        countryData: [],
-        countryName: null,
-        isLoading: false,
-      }
-    }
-
-  /*
-   *componentDidMount() {
-   * this.getFromStorage() 
-   *};
-   */
-
-  onDropdownPickerSelect = ({ label, value }) => {
-    //console.log({ value });
-    this.fetchDataByCountry(label, value)
-  }
-  
-  getLastValue = (currentData = [], key) => {
+  const getLastValue = (currentData = [], key) => {
     const lastValue = currentData.slice(-1)
 
     if (lastValue.length) {
@@ -44,14 +27,10 @@ export default class Home extends Component {
     return 0
   }
 
-  render() {
-    const { navigation } = this.props
-    const { countries, countryName, countryData, isLoading } = this.state
-    //console.log({ countries });
-    const lastValueConfirmed = this.getLastValue(countryData, 'Confirmed');
-    const lastValueActive = this.getLastValue(countryData, 'Active');
-    const lastValueRecovered = this.getLastValue(countryData, 'Recovered');
-    const lastValueDeaths = this.getLastValue(countryData, 'Deaths');
+    const lastValueConfirmed = getLastValue(countryData, 'Confirmed');
+    const lastValueActive = getLastValue(countryData, 'Active');
+    const lastValueRecovered = getLastValue(countryData, 'Recovered');
+    const lastValueDeaths = getLastValue(countryData, 'Deaths');
 
     const lineChartConfirmed = countryData.map(({ Confirmed }) => Confirmed);
     const lineChartActive = countryData.map(data => data.Active);
@@ -60,12 +39,6 @@ export default class Home extends Component {
 
     return (
       <SafeAreaView style={styles.container}>
-        <Button 
-          color={colors.yellow}
-          title="Abrir menú lateral"
-          onPress={() => navigation.openDrawer()}
-        />
-        <Loading isLoading={isLoading}>
           <TotalData 
             countryName={countryName} 
             totalConfirmed={lastValueConfirmed}
@@ -73,7 +46,6 @@ export default class Home extends Component {
             totalActive={lastValueActive}
             totalDeaths={lastValueDeaths}
           />
-        </Loading>
         <Button 
           title="Navegar a Gráficos"
           onPress={() => navigation.navigate('Charts', { 
@@ -86,4 +58,5 @@ export default class Home extends Component {
       </SafeAreaView>
     )
   }
-}
+
+export default Home
