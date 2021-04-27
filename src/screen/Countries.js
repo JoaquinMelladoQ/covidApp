@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios';
 import { showMessage } from 'react-native-flash-message'
 import colors from '../config/colors'
+import * as Animatable from 'react-native-animatable'
 
 const styles = StyleSheet.create({
   container: {
@@ -131,17 +132,38 @@ const Countries = () => {
       <FlatList 
         data={countries}
         keyExtractor={({ Slug }) => Slug}
-        renderItem={({ item: { Slug, Country }}) => (
+        renderItem={({ item: { Slug, Country }}) => {
+          const fadeIn = {
+            0: {
+              opacity: 0,
+              scale: 0,
+            },
+            0.5: {
+              opacity: 1,
+              scale: 0.3,
+            },
+            1: {
+              opacity: 1,
+              scale: 1,
+            },
+          };
+        return (
           <TouchableOpacity
             style={styles.countryContainer}
             onPress={() => console.log(Slug)}
           >
-            <Text style={styles.countryText}>{Country}</Text>
+            <Animatable.Text 
+              animation={fadeIn} 
+              style={styles.countryText}
+            >
+              {Country}
+            </Animatable.Text>
           </TouchableOpacity>
-        )}
+        ); 
+        }}
       />
     </SafeAreaView>
-  )
-}
+  );
+};
 
 export default Countries
