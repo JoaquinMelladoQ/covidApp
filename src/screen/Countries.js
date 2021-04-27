@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   StyleSheet, SafeAreaView, 
   Text, FlatList, TouchableOpacity, 
@@ -10,6 +10,7 @@ import { showMessage } from 'react-native-flash-message';
 import colors from '../config/colors';
 import * as Animatable from 'react-native-animatable';
 import Input from '../components/Input'
+import OverlaySpinner from 'react-native-loading-spinner-overlay';
 
 const styles = StyleSheet.create({
   container: {
@@ -30,6 +31,9 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     fontSize: 15,
     color: colors.darkBlue,
+  },
+  overlayStyle: {
+    color: colors.white,
   },
 })
 
@@ -126,7 +130,7 @@ const CountriesComponent = () => {
     //console.log({ response });
   };
 
-  const filterCountries = (searchText) => {
+  const filterCountries = useCallback(searchText => {
     if(searchText){
       const result = countries.filter(({ Country }) => Country.includes(searchText));
       //console.log({ result });
@@ -134,7 +138,7 @@ const CountriesComponent = () => {
     } else {
       updateSearchCountry(countries);
     };
-  };
+  }, [countries]);
 
   // Calling api before component is mounted
   useEffect(() => {
@@ -145,6 +149,12 @@ const CountriesComponent = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <OverlaySpinner 
+        color={colors.white}
+        textContent="Cargando información..."
+        textStyle={styles.overlayStyle}
+        visible={isLoading}
+      />
       <Text style={styles.title}>Selecciona un país</Text>
       <View>
         <Input 
@@ -175,7 +185,7 @@ const CountriesComponent = () => {
         return (
           <TouchableOpacity
             style={styles.countryContainer}
-            onPress={() => console.log(Slug)}
+            onPress={() => fetchDataByCountry(Country, Slug)}
           >
             <Animatable.Text 
               animation={fadeIn} 
