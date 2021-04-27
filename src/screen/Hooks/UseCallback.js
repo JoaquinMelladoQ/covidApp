@@ -30,8 +30,8 @@ const UseCallback = () => {
   const [delta, setDelta] = useState(1);
   const [incremental, setIncremental] = useState(0);
 
-  const incrementalDelta = () => setDelta((delta) => delta + 1)
-  const incremento = () => setIncremental((incremental) => incremental + delta)
+  const incrementalDelta = useCallback(() => setDelta((delta) => delta + 1), []) 
+  const incremento = useCallback(() => setIncremental((incremental) => incremental + delta), [delta])
   
   functions.add(incrementalDelta)
   functions.add(incremento)
