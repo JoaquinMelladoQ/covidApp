@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { StyleSheet, Button, SafeAreaView } from 'react-native';
-import { showMessage } from 'react-native-flash-message'
-import DropdownPicker from '../components/DropdownPicker'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import TotalData from '../components/TotalData'
 import colors from '../config/colors'
 import Loading from '../components/Loading'
@@ -16,88 +12,27 @@ const styles = StyleSheet.create({
   }
 })
 
-const countryAsyncStorageKey = 'countries'
 
 export default class Home extends Component {
     constructor(props) {
       super(props)
   
       this.state = { 
-        countries: [],
         countryData: [],
         countryName: null,
         isLoading: false,
       }
     }
 
-  componentDidMount() {
-   this.getFromStorage() 
-  };
-
-  getFromStorage = async () => {
-    const savedData = JSON.parse(await AsyncStorage.getItem(countryAsyncStorageKey))
-    if (savedData) {
-      this.setState({ countries: savedData })
-    }
-    //console.log({ savedData: JSON.parse(savedData) });
-  }
-
-  
-
-  fetchCountries = async () => {
-    const { data, status } = await axios.get('https://api.covid19api.com/countries');
-    console.log({ data, status });
-    if (status === 200) {
-      showMessage({
-        message: "Países obtenidos",
-        type: 'success',
-      })
-      const formattedCountries = data.map(({ Country, Slug }) => {
-        return {
-          label: Country,
-          value: Slug,
-        }
-      })
-
-      AsyncStorage.setItem(countryAsyncStorageKey, JSON.stringify(formattedCountries))
-
-      this.setState({ countries: formattedCountries })
-    }
-  }
+  /*
+   *componentDidMount() {
+   * this.getFromStorage() 
+   *};
+   */
 
   onDropdownPickerSelect = ({ label, value }) => {
     //console.log({ value });
     this.fetchDataByCountry(label, value)
-  }
-
-  fetchDataByCountry = async (countryName, countrySlug) => {
-    this.setState({ isLoading: true })
-    try {
-        const { data, status } = await axios.get(
-          `https://api.covid19api.com/country/${countrySlug}`)
-        if (status === 200) {
-          this.setState({ 
-            countryData: data,
-            countryName,
-            isLoading: false,
-          })
-          return
-        }
-
-        this.setState({ 
-          countryData: [],
-          countryName: null,
-          isLoading: false,
-        })
-
-      } catch {
-      this.setState({ 
-        countryData: [],
-        countryName: null,
-        isLoading: false,
-      })
-    }
-    //console.log({ response });
   }
   
   getLastValue = (currentData = [], key) => {
@@ -129,11 +64,6 @@ export default class Home extends Component {
           color={colors.yellow}
           title="Abrir menú lateral"
           onPress={() => navigation.openDrawer()}
-        />
-        <Button title="Obtener países" onPress={this.fetchCountries}/>
-        <DropdownPicker 
-          countries={countries} 
-          onSelect={this.onDropdownPickerSelect}
         />
         <Loading isLoading={isLoading}>
           <TotalData 
