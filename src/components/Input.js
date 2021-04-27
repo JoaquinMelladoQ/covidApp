@@ -19,6 +19,8 @@ const Input = ({
   onChangeText = () => {},
   autoCapitalize,
   autoCorrect,
+  placeholderTextColor = 'gray',
+  style,
 }) => {
   return (
     <View style={styles.container}>
@@ -26,6 +28,8 @@ const Input = ({
         autoCorrect={autoCorrect}
         autoCapitalize={autoCapitalize}
         placeholder={placeholder}
+        placeholderTextColor={placeholderTextColor}
+        style={style}
         value={value}
         onChangeText={onChangeText}
         keyboardType={keyboardType}
