@@ -98,9 +98,10 @@ const Countries = () => {
   }
 
   useEffect(() => {
-    
-  });
+    fetchCountries()
+  }, []);
   
+  console.log({ countries });
 
   return (
     <SafeAreaView>
