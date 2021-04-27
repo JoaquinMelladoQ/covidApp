@@ -1,16 +1,20 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { 
-  StyleSheet, SafeAreaView, 
-  Text, FlatList, TouchableOpacity, 
-  View, 
-} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { showMessage } from 'react-native-flash-message';
+import React, {useCallback, useEffect, useState} from 'react';
+import {
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {showMessage} from 'react-native-flash-message';
 import colors from '../config/colors';
 import * as Animatable from 'react-native-animatable';
-import Input from '../components/Input'
+import Input from '../components/Input';
 import OverlaySpinner from 'react-native-loading-spinner-overlay';
+import {useNavigation} from '@react-navigation/core';
 
 const styles = StyleSheet.create({
   container: {
@@ -35,139 +39,102 @@ const styles = StyleSheet.create({
   overlayStyle: {
     color: colors.white,
   },
-})
+});
 
 const countryAsyncStorageKey = 'countries';
 
 const CountriesComponent = () => {
   const [countries, updateCountries] = useState([]);
   const [searchCountry, updateSearchCountry] = useState([]);
-  const [countryData, updateCountryData] = useState([]);
-  const [countryName, updateCountryName] = useState('');
   const [isLoading, updateIsLoading] = useState(false);
-  
-  
-  
+  const navigation = useNavigation();
+
   const getFromStorage = async () => {
-    const savedData = JSON.parse(await AsyncStorage.getItem(countryAsyncStorageKey))
+    const savedData = JSON.parse(
+      await AsyncStorage.getItem(countryAsyncStorageKey),
+    );
     if (savedData) {
-      updateCountries(savedData)
-      //this.setState({ countries: savedData })
+      updateCountries(savedData);
     }
-    //console.log({ savedData: JSON.parse(savedData) });
   };
 
   const fetchCountries = async () => {
-    const { data, status } = await axios.get('https://api.covid19api.com/countries');
-    console.log({ data, status });
-    if (status === 200) {
-      updateCountryData(data);
-      updateCountryName(countryName);
-      updateIsLoading(false);
-    /*
-     *      this.setState({
-     *        countryData: data,
-     *        countryName,
-     *        isLoading: false,
-     *      })
-     *
-     */
-      showMessage({
-        message: "Países obtenidos",
-        type: 'success',
-      })
-      /*
-       *const formattedCountries = data.map(({ Country, Slug }) => {
-       *  return {
-       *    label: Country,
-       *    value: Slug,
-       *  }
-       *})
-       */
+    const {data, status} = await axios.get(
+      'https://api.covid19api.com/countries',
+    );
 
-      AsyncStorage.setItem(countryAsyncStorageKey, JSON.stringify(data))
+    if (status === 200) {
+      showMessage({
+        message: 'Paises obtenidos',
+        type: 'success',
+      });
+
+      AsyncStorage.setItem(countryAsyncStorageKey, JSON.stringify(data));
 
       updateCountries(data);
       updateSearchCountry(data);
-      //this.setState({ countries: formattedCountries })
     }
   };
 
   const fetchDataByCountry = async (countryName, countrySlug) => {
-    updateIsLoading(true)
-    //this.setState({ isLoading: true })
+    updateIsLoading(true);
     try {
-        const { data, status } = await axios.get(
-          `https://api.covid19api.com/country/${countrySlug}`)
-        if (status === 200) {
-          updateCountryData(data);
-          updateCountryName(countryName);
-          updateIsLoading(false);
-          return;
-        }
-          updateCountryData([]);
-          updateCountryName(null)
-          updateIsLoading(false);
-        /*
-         *this.setState({ 
-         *  countryData: [],
-         *  countryName: null,
-         *  isLoading: false,
-         *})
-         */
-      } catch {
-          updateCountryData([]);
-          updateCountryName(null)
-          updateIsLoading(false);
-      /*
-       *this.setState({ 
-       *  countryData: [],
-       *  countryName: null,
-       *  isLoading: false,
-       *})
-       */
+      const {data, status} = await axios.get(
+        `https://api.covid19api.com/country/${countrySlug}`,
+      );
+
+      if (status === 200) {
+        navigation.navigate('Home', {countryName, data});
+        updateIsLoading(false);
+        return;
+      }
+
+      updateIsLoading(false);
+    } catch {
+      updateIsLoading(false);
     }
-    //console.log({ response });
   };
 
-  const filterCountries = useCallback(searchText => {
-    if(searchText){
-      const result = countries.filter(({ Country }) => Country.includes(searchText));
-      //console.log({ result });
-      updateSearchCountry(result)
-    } else {
-      updateSearchCountry(countries);
-    };
-  }, [countries]);
+  const filterCountries = useCallback(
+    searchText => {
+      if (searchText) {
+        const result = countries.filter(({Country}) =>
+          Country.includes(searchText),
+        );
 
-  // Calling api before component is mounted
+        updateSearchCountry(result);
+      } else {
+        updateSearchCountry(countries);
+      }
+    },
+    [countries],
+  );
+
   useEffect(() => {
-    fetchCountries()
+    fetchCountries();
   }, []);
-  
-  //console.log({ countries });
 
   return (
     <SafeAreaView style={styles.container}>
-      <OverlaySpinner 
+      <OverlaySpinner
         color={colors.white}
-        textContent="Cargando información..."
+        textContent="Cargando informacion..."
         textStyle={styles.overlayStyle}
         visible={isLoading}
       />
-      <Text style={styles.title}>Selecciona un país</Text>
+      <Text style={styles.title}>Selecciona un paises</Text>
       <View>
-        <Input 
-          placeholder="Buscar país..."
+        <Input
+          placeholder="Buscar un pais..."
           placeholderTextColor={colors.darkBlue}
-          style={{ color: colors.darkBlue }}
+          style={{color: colors.darkBlue}}
           onChangeText={filterCountries}
         />
       </View>
-      <FlatList 
+      <FlatList
         data={searchCountry}
-        keyExtractor={({ Slug }) => Slug}
-        renderItem={({ item: { Slug, Country }}) => {
+        keyExtractor={({Slug}) => Slug}
+        renderItem={({item: {Slug, Country}}) => {
           const fadeIn = {
             0: {
               opacity: 0,
@@ -182,23 +149,19 @@ const CountriesComponent = () => {
               scale: 1,
             },
           };
-        return (
-          <TouchableOpacity
-            style={styles.countryContainer}
-            onPress={() => fetchDataByCountry(Country, Slug)}
-          >
-            <Animatable.Text 
-              animation={fadeIn} 
-              style={styles.countryText}
-            >
-              {Country}
-            </Animatable.Text>
-          </TouchableOpacity>
-        ); 
+          return (
+            <TouchableOpacity
+              style={styles.countryContainer}
+              onPress={() => fetchDataByCountry(Country, Slug)}>
+              <Animatable.Text style={styles.countryText} animation={fadeIn}>
+                {Country}
+              </Animatable.Text>
+            </TouchableOpacity>
+          );
         }}
       />
     </SafeAreaView>
   );
 };
 
-export default CountriesComponent
+export default CountriesComponent;
