@@ -1,8 +1,10 @@
 import React from 'react';
 import { SafeAreaView, StatusBar } from 'react-native';
-import Home from './screen/Home'
-import FlashMessage from 'react-native-flash-message'  
-import RootNavigation from './routes/Root'
+import Home from './screen/Home';
+import FlashMessage from 'react-native-flash-message';  
+import RootNavigation from './routes/Root';
+import { Provider } from 'react-redux';
+import store from './redux/store';
 
 const App = () => {
   return (
@@ -12,7 +14,9 @@ const App = () => {
         position="top" 
         canRegisterAsDefault
       />
-      <RootNavigation />
+      <Provider store={store}>
+        <RootNavigation />
+      </Provider>
     </>
   );
 };
