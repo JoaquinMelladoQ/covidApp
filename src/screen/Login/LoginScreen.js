@@ -10,13 +10,13 @@ import {
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import colors from '../../config/colors.js';
-import Icon from 'react-native-vector-icons/AntDesign';
+import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const styles = StyleSheet.create({
   header: {
     backgroundColor: colors.black,
     height: '40%',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
   },
   headerText: {
     margin: 20,
@@ -62,6 +62,7 @@ const Login = () => {
   const [focusPasswordInput, updateFocusPasswordInput] = useState(false); 
 
   const passwordInputRef = useRef(null);
+  MaterialIcon.loadFont();
 
   useEffect(() => {
 
@@ -69,16 +70,16 @@ const Login = () => {
 
   return (
     <>
-      <KeyboardAwareScrollView>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Login</Text>
-        </View>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Login</Text>
+      </View>
+      <KeyboardAwareScrollView extraScrollHeight={20}>
         <View style={styles.inputsContainer}>
-          <TextInput 
+          <TextInput
             placeholder="Usuario"
             autoCapitalize="none"
             value={userName}
-            onChangeText={(name) => updateUserName(name)}
+            onChangeText={name => updateUserName(name)}
             style={[
               styles.textInput,
               focusNameInput && styles.inputFocusBorderColor,
@@ -89,13 +90,12 @@ const Login = () => {
               passwordInputRef.current.focus();
             }}
           />
-          <TextInput 
+          <TextInput
             ref={passwordInputRef}
             placeholder="Password"
             autoCapitalize="none"
             value={userPassword}
-            secureTextEntry
-            onChangeText={(password) => updateUserPassword(password)}
+            onChangeText={password => updateUserPassword(password)}
             style={[
               styles.textInput,
               focusPasswordInput && styles.inputFocusBorderColor,
@@ -104,19 +104,19 @@ const Login = () => {
             onBlur={() => updateFocusPasswordInput(false)}
           />
           <TouchableOpacity
-            style={styles.loginButton}
-          >
+            onPress={() => loginCallback()}
+            style={styles.loginButton}>
             <Text style={styles.loginButtonText}>Ingresar</Text>
-            <Icon 
-              name="login"
-              color={colors.white}
-              size={20}
+            <MaterialIcon 
+              name="login" 
+              color={colors.white} 
+              size={20} 
             />
           </TouchableOpacity>
         </View>
       </KeyboardAwareScrollView>
     </>
-  )
+  );
 };
 
 export default Login;
