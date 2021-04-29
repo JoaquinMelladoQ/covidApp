@@ -1,9 +1,14 @@
-import React, { useState, } from 'react';
+import React, { 
+  useState, 
+  useEffect, 
+  useRef, 
+} from 'react';
 import { 
   View, StyleSheet, 
   Text, TextInput, 
   TouchableOpacity, 
 } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import colors from '../../config/colors.js';
 import Icon from 'react-native-vector-icons/AntDesign';
 
@@ -45,44 +50,71 @@ const styles = StyleSheet.create({
     marginRight: 5,
     color: colors.white,
   },
+  inputFocusBorderColor: {
+    borderColor: colors.orange,
+  },
 })
 
 const Login = () => {
   const [userName, updateUserName] = useState('');
   const [userPassword, updateUserPassword] = useState(''); 
+  const [focusNameInput, updateFocusNameInput] = useState(false);
+  const [focusPasswordInput, updateFocusPasswordInput] = useState(false); 
+
+  const passwordInputRef = useRef(null);
+
+  useEffect(() => {
+
+  }, []) 
 
   return (
     <>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Login</Text>
-      </View>
-      <View style={styles.inputsContainer}>
-        <TextInput 
-          placeholder="Usuario"
-          autoCapitalize="none"
-          value={userName}
-          onChangeText={(name) => updateUserName(name)}
-          style={styles.textInput}
-        />
-        <TextInput 
-          placeholder="Password"
-          autoCapitalize="none"
-          value={userPassword}
-          secureTextEntry
-          onChangeText={(password) => updateUserPassword(password)}
-          style={styles.textInput}
-        />
-        <TouchableOpacity
-          style={styles.loginButton}
-        >
-          <Text style={styles.loginButtonText}>Ingresar</Text>
-          <Icon 
-            name="login"
-            color={colors.white}
-            size={20}
+      <KeyboardAwareScrollView>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Login</Text>
+        </View>
+        <View style={styles.inputsContainer}>
+          <TextInput 
+            placeholder="Usuario"
+            autoCapitalize="none"
+            value={userName}
+            onChangeText={(name) => updateUserName(name)}
+            style={[
+              styles.textInput,
+              focusNameInput && styles.inputFocusBorderColor,
+            ]}
+            onFocus={() => updateFocusNameInput(true)}
+            onBlur={() => {
+              updateFocusNameInput(false);
+              passwordInputRef.current.focus();
+            }}
           />
-        </TouchableOpacity>
-      </View>
+          <TextInput 
+            ref={passwordInputRef}
+            placeholder="Password"
+            autoCapitalize="none"
+            value={userPassword}
+            secureTextEntry
+            onChangeText={(password) => updateUserPassword(password)}
+            style={[
+              styles.textInput,
+              focusPasswordInput && styles.inputFocusBorderColor,
+            ]}
+            onFocus={() => updateFocusPasswordInput(true)}
+            onBlur={() => updateFocusPasswordInput(false)}
+          />
+          <TouchableOpacity
+            style={styles.loginButton}
+          >
+            <Text style={styles.loginButtonText}>Ingresar</Text>
+            <Icon 
+              name="login"
+              color={colors.white}
+              size={20}
+            />
+          </TouchableOpacity>
+        </View>
+      </KeyboardAwareScrollView>
     </>
   )
 };
