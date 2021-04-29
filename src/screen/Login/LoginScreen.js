@@ -1,16 +1,19 @@
-import React, { 
-  useState, 
-  useEffect, 
-  useRef, 
-} from 'react';
-import { 
-  View, StyleSheet, 
-  Text, TextInput, 
-  TouchableOpacity, 
+import React, {useState, useRef, useEffect} from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
 } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import colors from '../../config/colors.js';
+import {connect} from 'react-redux';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import colors from '../../config/colors';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {login as loginAction, setLoading} from '../../redux/actions';
+import OverlaySpinner from 'react-native-loading-spinner-overlay';
+import {useNavigation} from '@react-navigation/core';
 
 const styles = StyleSheet.create({
   header: {
@@ -53,23 +56,32 @@ const styles = StyleSheet.create({
   inputFocusBorderColor: {
     borderColor: colors.orange,
   },
-})
+});
 
-const Login = () => {
+const Login = ({isLoadingActive, loginIn, valid: validLogin}) => {
   const [userName, updateUserName] = useState('');
-  const [userPassword, updateUserPassword] = useState(''); 
+  const [userPassword, updateUserPassword] = useState('');
   const [focusNameInput, updateFocusNameInput] = useState(false);
-  const [focusPasswordInput, updateFocusPasswordInput] = useState(false); 
-
+  const [focusPasswordInput, updateFocusPasswordInput] = useState(false);
   const passwordInputRef = useRef(null);
+  const navigation = useNavigation();
   MaterialIcon.loadFont();
 
-  useEffect(() => {
+  const loginCallback = (user, password) => {
+    if (userName && userPassword) {
+      loginIn(userName, userPassword);
+    }
+  };
 
-  }, []) 
+  // useEffect(() => {
+  //   if (validLogin) {
+  //     navigation.navigate('HomeNavigator');
+  //   }
+  // }, [validLogin, navigation]);
 
   return (
     <>
+      <OverlaySpinner visible={isLoadingActive} color={colors.white} />
       <View style={styles.header}>
         <Text style={styles.headerText}>Login</Text>
       </View>
@@ -107,11 +119,7 @@ const Login = () => {
             onPress={() => loginCallback()}
             style={styles.loginButton}>
             <Text style={styles.loginButtonText}>Ingresar</Text>
-            <MaterialIcon 
-              name="login" 
-              color={colors.white} 
-              size={20} 
-            />
+            <MaterialIcon name="login" color={colors.white} size={20} />
           </TouchableOpacity>
         </View>
       </KeyboardAwareScrollView>
@@ -119,4 +127,18 @@ const Login = () => {
   );
 };
 
-export default Login;
+const mapDispatchToProps = dispatch => {
+  return {
+    loginIn: (user, password) => dispatch(loginAction({user, password})),
+  };
+};
+
+const mapStateToProps = globalState => {
+  return {
+    isLoadingActive: globalState.loginReducer.loading,
+    valid: globalState.loginReducer.valid,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
+
